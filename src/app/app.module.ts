@@ -31,7 +31,7 @@ import { FakeBackendProvider } from './fake-backend.interceptor';
     HttpClientModule,
   ],
   
-  providers: [],
+  providers: [FakeBackendProvider],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

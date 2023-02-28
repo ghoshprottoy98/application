@@ -6,7 +6,23 @@ import { ApiService } from './api.service';
 @Injectable({
   providedIn: 'root'
 })
+
 export class AuthService {
 
-  constructor() { }
+  private _isLoggedIn$ = new BehaviorSubject<boolean>(false);
+  isLoggedIn$ = this._isLoggedIn$.asObservable();
+
+  constructor(private apiService: ApiService) {
+    const token = localStorage.getItem('prottoy_auth');
+    this._isLoggedIn$.next(!!token);
+   }
+
+   login(username: string, password: string){
+    return this.apiService.login(username, password).pipe(
+      tap((response: any) => {
+        localStorage.setItem('prottoy_auth', response.token);
+        this._isLoggedIn$.next(true);
+      })
+    );
+   }
 }
